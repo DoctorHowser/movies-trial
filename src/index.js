@@ -9,10 +9,45 @@ import { Provider } from 'react-redux';
 import logger from 'redux-logger';
 // Import saga middleware
 import createSagaMiddleware from 'redux-saga';
+import {takeEvery, put} from 'redux-saga/effects'
+import axios from 'axios';
 
 // Create the rootSaga generator function
 function* rootSaga() {
+    yield takeEvery('FETCH_MOVIES', fetchMovies)
+    yield takeEvery('FETCH_MOVIE', fetchSingleMovie)
+    // yield takeEvery('FETCH_GENRE', fetchGenre)
 
+}
+
+
+
+function* fetchMovies() {
+    try{
+        console.log('got to fetch movies');
+        
+        let {data} = yield axios.get('/api/movie');
+        yield put({type: 'SET_MOVIES', payload: data  })
+    } catch (err) {
+        console.log(err)
+        yield put({type: 'FETCH_MOVIES_ERROR', payload: err  })
+
+    }
+    
+}
+
+function* fetchSingleMovie(action) {
+    try{
+        console.log('got to fetch movies');
+        yield put({type: 'SET_ACTIVE_MOVIE', payload: action.payload})
+        let {data} = yield axios.get(`/api/genres/${action.payload}`);
+        yield put({type: 'SET_TAGS', payload: data  })
+    } catch (err) {
+        console.log(err)
+        yield put({type: 'FETCH_MOVIES_ERROR', payload: err  })
+
+    }
+    
 }
 
 // Create sagaMiddleware
@@ -23,6 +58,15 @@ const movies = (state = [], action) => {
     switch (action.type) {
         case 'SET_MOVIES':
             return action.payload;
+        default:
+            return state;
+    }
+}
+
+const currentMovie = (state = null, action) => {
+    switch (action.type) {
+        case 'SET_ACTIVE_MOVIE':
+            return action.payload
         default:
             return state;
     }
@@ -43,6 +87,7 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        currentMovie
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
