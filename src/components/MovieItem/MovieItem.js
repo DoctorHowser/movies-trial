@@ -19,9 +19,12 @@ function MovieItem(props) {
   
   let handleClick = () => {
     dispatch({type: 'FETCH_MOVIE', payload: props.movie.id});
-    props.history.push('/details')
+    props.history.push('/detail')
   }
 
+  let handleEditClick = () => {
+    props.history.push('/edit')
+  }
 
   console.log(props)
   return(
@@ -42,6 +45,9 @@ function MovieItem(props) {
         <Button onClick={handleClick} size="small" color="primary">
           Learn More
         </Button>
+        {props.editable && <Button onClick={handleEditClick} size="small" color="primary">
+          Edit
+        </Button>}
       </CardActions>
     </Card>
   )
