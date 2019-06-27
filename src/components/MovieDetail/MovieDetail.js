@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import MovieItem from '../MovieItem/MovieItem';
 import Genres from '../Genres/Genres'
-import { Button } from '@material-ui/core';
+import { Button, List } from '@material-ui/core';
 
 function MovieDetail(props) {
   let dispatch = useDispatch()
@@ -21,7 +21,9 @@ function MovieDetail(props) {
     <>
       <Button onClick={() => props.history.push('/')}>Back</Button>
       <MovieItem movie={currentMovie} editable />
-      <Genres genres={selectedMovieGenres} />
+      <List>
+        <Genres genres={selectedMovieGenres} />
+      </List>
     </>
   )
 }

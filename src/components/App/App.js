@@ -6,6 +6,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import MovieList from '../MovieList/MovieList'
 import MovieDetail from '../MovieDetail/MovieDetail'
 import MovieEdit from '../MovieEdit/MovieEdit'
+import {Container} from '@material-ui/core'
 class App extends Component {
   // Renders the entire app on the DOM
   componentDidMount() {
@@ -15,13 +16,13 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
+        <Container className="App">
           
           <Route path='/' exact component={MovieList} />
           <Route path='/detail' exact component={MovieDetail} />
           <Route path='/edit' exact component={MovieEdit} />
 
-        </div>
+        </Container>
       </Router>
       
     );
